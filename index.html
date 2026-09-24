@@ -905,34 +905,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       border-color: var(--bordo);
       box-shadow: 0 0 0 3px rgba(110, 20, 35, 0.12);
     }
-    .pix-box {
-      background: #FFF9F8;
-      border: 1.5px dashed var(--cereja);
-      border-radius: 14px;
-      padding: 18px;
-      margin: 18px 0;
-      text-align: center;
-    }
-    .pix-key-display {
-      font-family: monospace;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--bordo);
-      background: #FFF;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #ECD0D4;
-      display: inline-block;
-      margin: 10px 0;
-      word-break: break-all;
-    }
-    .copy-toast {
-      display: none;
-      color: #2E7D32;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-top: 6px;
-    }
+
 
     /* Modal success screen */
     .success-view {
@@ -995,6 +968,46 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       font-weight: 600;
       font-size: 1rem;
     }
+
+    /* Floating WhatsApp Button */
+    .whatsapp-float-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background-color: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4), 0 2px 8px rgba(0, 0, 0, 0.16);
+      z-index: 990;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .whatsapp-float-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.55), 0 4px 10px rgba(0, 0, 0, 0.2);
+      color: #FFFFFF;
+    }
+    .whatsapp-float-btn:active {
+      transform: scale(0.96);
+    }
+    .whatsapp-float-btn:focus-visible {
+      outline: 3px solid #2B161B;
+      outline-offset: 3px;
+    }
+    @media (max-width: 600px) {
+      .whatsapp-float-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 54px;
+        height: 54px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1009,16 +1022,15 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
 
       <ul class="nc-nav-links">
         <li><a href="#eventos">Eventos &amp; Agenda</a></li>
-        <li><a href="#ingressos">Ingressos</a></li>
         <li><a href="#como-funciona">Como Funciona</a></li>
         <li><a href="#duvidas">Dúvidas</a></li>
         <li><a href="#painel">Painel da Organizadora</a></li>
       </ul>
 
       <div style="display: flex; align-items: center; gap: 12px;">
-        <button class="btn-bordo" onclick="openModal('modal-boxe')">
+        <a href="#eventos" class="btn-bordo" style="text-decoration: none;">
           <span>Garantir Vaga</span>
-        </button>
+        </a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menu de navegação">
           ☰
         </button>
@@ -1029,12 +1041,11 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
     <div class="mobile-drawer" id="mobileDrawer">
       <ul>
         <li><a href="#eventos" onclick="toggleMobileMenu()">Eventos &amp; Agenda</a></li>
-        <li><a href="#ingressos" onclick="toggleMobileMenu()">Ingressos</a></li>
         <li><a href="#como-funciona" onclick="toggleMobileMenu()">Como Funciona</a></li>
         <li><a href="#duvidas" onclick="toggleMobileMenu()">Dúvidas</a></li>
         <li><a href="#painel" onclick="toggleMobileMenu()">Painel da Organizadora</a></li>
       </ul>
-      <button class="btn-bordo" style="width: 100%;" onclick="toggleMobileMenu(); openModal('modal-boxe');">Garantir Vaga</button>
+      <a href="#eventos" class="btn-bordo" style="width: 100%; text-align: center; text-decoration: none;" onclick="toggleMobileMenu()">Garantir Vaga</a>
     </div>
   </header>
 
@@ -1085,7 +1096,95 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
     </div>
 
     <div class="cards-grid">
-      <!-- Card 1: Aula de Boxe -->
+      <!-- 1) Card: Cinema (11/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-cherry">🎟️ Pago</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Aconchego</span>
+          </div>
+          <h3>Cinema</h3>
+          <p class="event-tagline">Uma sessão de cinema especial para a gente se encontrar, relaxar e compartilhar histórias juntas.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Domingo, 11 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>10:30</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Shopping Lindoia — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Uma manhã de cinema com muito acolhimento e boas companhias. Venha assistir, conversar e aproveitar esse momento leve entre mulheres pretas.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 130 de 130 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Valor do ingresso R$ 15,00
+          </div>
+          <a href="https://uticket.com.br/evento/cinema/01MEZV3J0PBFOU" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 2) Card: Doação de Sangue (17/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-free">✨ Gratuito</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: #1B5E20;">Solidariedade</span>
+          </div>
+          <h3>Doação de Sangue</h3>
+          <p class="event-tagline">Um ato de amor e solidariedade. Vamos juntas doar sangue e salvar vidas.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Sábado, 17 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>08:00 (8h da manhã)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Hospital Conceição (GHC) — Centro Redentor, Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Um encontro com propósito: doar sangue e fazer a diferença. Acolhimento total para quem vai pela primeira vez — a gente caminha junto nessa missão.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 30 de 30 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Investimento Gratuito (R$ 0,00)
+          </div>
+          <a href="https://uticket.com.br/evento/doacao-de-sangue/01MEZUQT9J0FRJ" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 3) Card: Aula de Boxe (17/10) -->
       <article class="event-card">
         <div>
           <div class="card-top-bar">
@@ -1106,7 +1205,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
             </div>
             <div class="event-meta-row">
               <span class="event-meta-icon">📍</span>
-              <span>Porto Alegre — endereço confirmado em breve</span>
+              <span>Centro — Porto Alegre</span>
             </div>
           </div>
 
@@ -1123,21 +1222,65 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
           <div class="price-tag">
             Valor do ingresso R$ 50,00
           </div>
-          <button class="btn-bordo" style="width: 100%;" onclick="openModal('modal-boxe')">
-            Comprar ingresso
-          </button>
+          <a href="https://uticket.com.br/evento/aula-de-box/01MEZ1WR43XYX7" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
         </div>
       </article>
 
-      <!-- Card 2: Aula Fitdance -->
+      <!-- 4) Card: Puppy Yoga (18/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-cherry">🎟️ Pago</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Bem-estar</span>
+          </div>
+          <h3>Puppy Yoga</h3>
+          <p class="event-tagline">Yoga com filhotes de cachorro! Relaxamento, fofura e muita alegria.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Domingo, 18 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>10:00 (10h da manhã)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Bairro Menino Deus — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Uma aula de yoga leve e divertida com a companhia de filhotes. Solte o corpo, relaxe a mente e encha o coração de fofura em um encontro acolhedor.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 20 de 20 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Valor do ingresso R$ 70,00
+          </div>
+          <a href="https://uticket.com.br/evento/puppy-yoga/01MEZO3TZZAGED" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 5) Card: Aula Fitdance (24/10) -->
       <article class="event-card">
         <div>
           <div class="card-top-bar">
             <span class="badge-free">✨ Gratuito</span>
-            <span style="font-size: 0.8rem; font-weight: 600; color: #1B5E20;">Vagas Gratuitas</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: #1B5E20;">Ritmo &amp; Dança</span>
           </div>
           <h3>Aula Fitdance</h3>
-          <p class="event-tagline">Dança, energia alta, bem-estar e celebração coletiva.</p>
+          <p class="event-tagline">Energia lá em cima, passos contagiantes e muita celebração do nosso corpo.</p>
 
           <div class="event-meta">
             <div class="event-meta-row">
@@ -1155,7 +1298,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
           </div>
 
           <p class="event-body">
-            Venha dançar, suar e soltar a energia no ritmo da Fitdance. Não precisa saber coreografia — é só chegar, se mexer e se divertir.
+            Venha dançar, suar e soltar a energia no ritmo da Fitdance. Não precisa saber coreografia — é só chegar, se mexer e se divertir entre mulheres pretas.
           </p>
         </div>
 
@@ -1167,21 +1310,21 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
           <div class="price-tag">
             Investimento Gratuito (R$ 0,00)
           </div>
-          <button class="btn-bordo" style="width: 100%; background: #2E7D32; border-color: #2E7D32;" onclick="openModal('modal-fitdance')">
-            Garantir vaga
-          </button>
+          <a href="https://uticket.com.br/evento/aula-fitdance/01MEZ60PY3G5DF" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
         </div>
       </article>
 
-      <!-- Card 3: Aula de Samba -->
+      <!-- 6) Card: Aula de Samba (24/10) -->
       <article class="event-card">
         <div>
           <div class="card-top-bar">
             <span class="badge-cherry">🎟️ Pago</span>
-            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Cultura &amp; Ritmo</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Ritmo &amp; Tradição</span>
           </div>
           <h3>Aula de Samba</h3>
-          <p class="event-tagline">Ritmo, alegria, conexão e celebração do nosso corpo.</p>
+          <p class="event-tagline">Ritmo, gingado e ancestralidade no coração cultural de Porto Alegre.</p>
 
           <div class="event-meta">
             <div class="event-meta-row">
@@ -1199,7 +1342,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
           </div>
 
           <p class="event-body">
-            Venha mexer o corpo e soltar a alma no ritmo do samba. Não precisa saber dançar — a gente ensina, é só chegar e se divertir.
+            Uma aula deliciosa para conectar corpo, ritmo e ancestralidade. Não precisa saber dançar: nosso encontro é para celebrar, aprender juntas e se divertir com leveza.
           </p>
         </div>
 
@@ -1211,9 +1354,53 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
           <div class="price-tag">
             Valor do ingresso R$ 50,00
           </div>
-          <button class="btn-bordo" style="width: 100%;" onclick="openModal('modal-samba')">
-            Comprar ingresso
-          </button>
+          <a href="https://uticket.com.br/evento/aula-de-samba/01MEZCHO0XI97D" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 7) Card: Karaoke de Halloween (30/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-cherry">🎟️ Pago</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Celebração</span>
+          </div>
+          <h3>Karaoke de Halloween</h3>
+          <p class="event-tagline">Uma noite temática de cantoria, fantasia, gargalhadas e conexão.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Sexta-feira, 30 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>20:00 (20h)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Cidade Baixa — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Venha soltar a voz sem vergonha nenhuma no nosso karaokê especial de Halloween! Fantasia opcional, acolhimento garantido e muita música boa para cantar e brindar juntas.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 40 de 40 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Valor do ingresso R$ 35,00
+          </div>
+          <a href="https://uticket.com.br/evento/karaoke-de-halloween/01MEZM0V6B804G" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
         </div>
       </article>
     </div>
@@ -1241,7 +1428,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
           <div class="steps-card-header">
             <span style="font-size: 1.6rem;">🎟️</span>
             <div>
-              <h3>Eventos Pagos (Boxe &amp; Samba — R$ 50,00)</h3>
+              <h3>Eventos Pagos</h3>
             </div>
           </div>
 
@@ -1249,22 +1436,22 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
             <li class="step-item">
               <div class="step-num">1</div>
               <div>
-                <div class="step-title">Escolha a quantidade</div>
-                <p class="step-desc">Preencha seus dados de contato e selecione a quantidade de ingressos.</p>
+                <div class="step-title">Clique em Comprar Ingresso</div>
+                <p class="step-desc">Escolha o encontro desejado na programação e acesse o link oficial do evento na uticket.</p>
               </div>
             </li>
             <li class="step-item">
               <div class="step-num">2</div>
               <div>
-                <div class="step-title">Pague via chave Pix</div>
-                <p class="step-desc">Valor de R$ 50,00 usando a chave oficial <strong style="color: var(--bordo);">negrasclubb@gmail.com</strong>.</p>
+                <div class="step-title">Pagamento seguro na plataforma</div>
+                <p class="step-desc">Escolha a forma de pagamento de sua preferência diretamente na uticket (Pix, cartão ou outros meios disponíveis).</p>
               </div>
             </li>
             <li class="step-item">
               <div class="step-num">3</div>
               <div>
-                <div class="step-title">Envie comprovante no WhatsApp</div>
-                <p class="step-desc">Nossa equipe faz a conferência manual e envia o acolhimento e confirmação.</p>
+                <div class="step-title">Vaga garantida automaticamente</div>
+                <p class="step-desc">Sua confirmação é imediata pela plataforma, sem necessidade de envio manual de comprovante.</p>
               </div>
             </li>
           </ul>
@@ -1307,92 +1494,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
     </div>
   </section>
 
-  <!-- Seção Ingressos -->
-  <section id="ingressos" class="section-wrap">
-    <div class="section-header">
-      <div class="section-tag">
-        <span>🎟️ Eventos Pagos • Valor Único • Vagas Limitadas</span>
-      </div>
-      <h2 class="section-title">Ingressos — Boxe &amp; Samba</h2>
-      <p class="section-desc">
-        Valor único de R$ 50,00 por participante para todos, sem meia-entrada ou lotes. Pagamento seguro via Pix com confirmação no WhatsApp.
-      </p>
-    </div>
 
-    <div class="tickets-grid">
-      <!-- Bloco Boxe -->
-      <div class="ticket-box">
-        <span class="ticket-badge-corner">40 Vagas Totais</span>
-        <div>
-          <h3>Ingresso — Aula de Boxe</h3>
-          <div class="ticket-subtitle">Sábado 17/10, 10h • Porto Alegre</div>
-          
-          <div class="ticket-price">
-            R$ 50,00 <small>/ pessoa</small>
-          </div>
-          
-          <div class="ticket-vagas">
-            Restam 40 de 40 vagas
-          </div>
-
-          <ul class="ticket-bullets">
-            <li>
-              <span class="bullet-check">✦</span>
-              <span>Acesso total à aula prática de boxe às 10:00</span>
-            </li>
-            <li>
-              <span class="bullet-check">✦</span>
-              <span>Empréstimo de luvas e equipamentos no local</span>
-            </li>
-            <li>
-              <span class="bullet-check">✦</span>
-              <span>Acolhimento para quem vem sozinha e nunca treinou</span>
-            </li>
-          </ul>
-        </div>
-
-        <button class="btn-bordo" style="width: 100%;" onclick="openModal('modal-boxe')">
-          Comprar ingresso (R$ 50)
-        </button>
-      </div>
-
-      <!-- Bloco Samba -->
-      <div class="ticket-box">
-        <span class="ticket-badge-corner">30 Vagas Totais</span>
-        <div>
-          <h3>Ingresso — Aula de Samba</h3>
-          <div class="ticket-subtitle">Sábado 24/10, 17h30 • Casa de Cultura Mario Quintana</div>
-          
-          <div class="ticket-price">
-            R$ 50,00 <small>/ pessoa</small>
-          </div>
-          
-          <div class="ticket-vagas">
-            Restam 30 de 30 vagas
-          </div>
-
-          <ul class="ticket-bullets">
-            <li>
-              <span class="bullet-check">✦</span>
-              <span>Acesso total à aula prática de samba às 17h30</span>
-            </li>
-            <li>
-              <span class="bullet-check">✦</span>
-              <span>Casa de Cultura Mario Quintana — espaço histórico e acolhedor</span>
-            </li>
-            <li>
-              <span class="bullet-check">✦</span>
-              <span>Não precisa saber dançar — é só chegar e se divertir</span>
-            </li>
-          </ul>
-        </div>
-
-        <button class="btn-bordo" style="width: 100%;" onclick="openModal('modal-samba')">
-          Comprar ingresso (R$ 50)
-        </button>
-      </div>
-    </div>
-  </section>
 
   <!-- Seção Dúvidas -->
   <section id="duvidas" style="background-color: #FAF4ED; border-top: 1px solid var(--creme-border); border-bottom: 1px solid var(--creme-border);">
@@ -1440,7 +1542,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
             <span class="arrow">▾</span>
           </button>
           <div class="faq-answer">
-            <p>O ingresso possui valor único de R$ 50,00 por participante, sem taxas extras ou lotes. O pagamento é realizado diretamente via Pix na chave oficial <strong>negrasclubb@gmail.com</strong>. Após a transferência, envie o comprovante no nosso WhatsApp para receber a confirmação oficial e as orientações.</p>
+            <p>Os ingressos são comprados diretamente pelo botão "Comprar Ingresso" de cada evento, que redireciona você para a plataforma oficial da uticket. Lá, o pagamento é realizado com total segurança (via Pix, cartão de crédito ou outros meios disponíveis na plataforma) e a sua vaga é garantida automaticamente, sem necessidade de envio manual de comprovante.</p>
           </div>
         </div>
 
@@ -1503,7 +1605,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       </p>
 
       <div class="contact-actions">
-        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="btn-bordo" style="background-color: #25D366; border-color: #25D366; color: #FFF !important;">
+        <a href="https://wa.me/5551998469575?text=Ol%C3%A1!%20Vim%20pelo%20site%20do%20negras%20club%20%F0%9F%92%9C" target="_blank" rel="noopener noreferrer" class="btn-bordo" style="background-color: #25D366; border-color: #25D366; color: #FFF !important;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12.031 2C6.504 2 2 6.5 2 12.022c0 1.83.493 3.55 1.348 5.035L2 22l5.093-1.334A9.97 9.97 0 0 0 12.031 22C17.558 22 22 17.5 22 12.022 22 6.5 17.558 2 12.031 2zm5.823 14.225c-.244.685-1.418 1.31-1.956 1.36-.51.048-1.178.072-3.83-1.026-3.39-1.403-5.57-4.838-5.74-5.064-.168-.226-1.378-1.833-1.378-3.496 0-1.663.873-2.482 1.185-2.822.313-.34.684-.424.912-.424.227 0 .454.002.653.013.21.01.492-.08.769.585.285.684.972 2.373 1.058 2.545.086.172.143.373.029.601-.114.228-.172.37-.342.57-.17.2-.358.448-.512.601-.17.17-.348.354-.15.694.198.34.88 1.452 1.888 2.35 1.303 1.16 2.404 1.52 2.744 1.69.34.17.538.143.738-.086.2-.228.854-.997 1.082-1.338.228-.34.456-.285.769-.17.313.114 1.984.936 2.325 1.107.34.17.568.256.653.398.085.142.085.824-.159 1.509z"/>
           </svg>
@@ -1518,6 +1620,17 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       </div>
     </div>
   </section>
+
+  <!-- Botão Flutuante de WhatsApp -->
+  <a href="https://wa.me/5551998469575?text=Ol%C3%A1!%20Vim%20pelo%20site%20do%20negras%20club%20%F0%9F%92%9C" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     class="whatsapp-float-btn" 
+     aria-label="Falar no WhatsApp">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true">
+      <path d="M12.031 2C6.504 2 2 6.5 2 12.022c0 1.83.493 3.55 1.348 5.035L2 22l5.093-1.334A9.97 9.97 0 0 0 12.031 22C17.558 22 22 17.5 22 12.022 22 6.5 17.558 2 12.031 2zm5.823 14.225c-.244.685-1.418 1.31-1.956 1.36-.51.048-1.178.072-3.83-1.026-3.39-1.403-5.57-4.838-5.74-5.064-.168-.226-1.378-1.833-1.378-3.496 0-1.663.873-2.482 1.185-2.822.313-.34.684-.424.912-.424.227 0 .454.002.653.013.21.01.492-.08.769.585.285.684.972 2.373 1.058 2.545.086.172.143.373.029.601-.114.228-.172.37-.342.57-.17.2-.358.448-.512.601-.17.17-.348.354-.15.694.198.34.88 1.452 1.888 2.35 1.303 1.16 2.404 1.52 2.744 1.69.34.17.538.143.738-.086.2-.228.854-.997 1.082-1.338.228-.34.456-.285.769-.17.313.114 1.984.936 2.325 1.107.34.17.568.256.653.398.085.142.085.824-.159 1.509z"/>
+    </svg>
+  </a>
 
   <!-- Rodapé -->
   <footer class="nc-footer">
@@ -1597,189 +1710,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
     </div>
   </div>
 
-  <!-- MODAL: BOXE (Pago) -->
-  <div id="modal-boxe" class="modal-overlay" onclick="closeModalOnBackdrop(event, 'modal-boxe')">
-    <div class="modal-card">
-      <button class="modal-close-btn" onclick="closeModal('modal-boxe')" aria-label="Fechar modal">✕</button>
 
-      <div id="boxe-form-view">
-        <div class="modal-tag">🎟️ Inscrição em Evento Pago • Valor Único</div>
-        <h3 class="modal-header-title">Comprar Ingresso</h3>
-
-        <div class="modal-info-box">
-          <p style="margin: 0 0 6px;"><strong>Aula de Boxe • Sábado, 17 de outubro de 2026, 10:00 (Porto Alegre)</strong></p>
-          <p style="margin: 0 0 6px; color: var(--cereja); font-weight: 600;">Vagas disponíveis no momento: 40 de 40</p>
-          <div style="font-size: 0.85rem; color: var(--text-soft);">
-            <strong>Aula de Boxe</strong> • Valor único: R$ 50,00 por pessoa
-          </div>
-          <div style="margin-top: 8px; font-weight: 700; color: var(--bordo); font-size: 1.05rem;" id="boxe-total-preview">
-            Total a pagar: R$ 50,00
-          </div>
-        </div>
-
-        <form onsubmit="handlePaidSubmit(event, 'Boxe')">
-          <div class="form-group">
-            <label class="form-label" for="boxe-qty">Quantidade de Ingressos (1 a 10) *</label>
-            <select id="boxe-qty" class="form-control" onchange="updatePaidTotal('boxe', this.value)" required>
-              <option value="1">1 ingresso — R$ 50,00</option>
-              <option value="2">2 ingressos — R$ 100,00</option>
-              <option value="3">3 ingressos — R$ 150,00</option>
-              <option value="4">4 ingressos — R$ 200,00</option>
-              <option value="5">5 ingressos — R$ 250,00</option>
-              <option value="6">6 ingressos — R$ 300,00</option>
-              <option value="7">7 ingressos — R$ 350,00</option>
-              <option value="8">8 ingressos — R$ 400,00</option>
-              <option value="9">9 ingressos — R$ 450,00</option>
-              <option value="10">10 ingressos — R$ 500,00</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="boxe-name">Nome Completo *</label>
-            <input type="text" id="boxe-name" class="form-control" placeholder="Seu nome completo" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="boxe-email">Seu E-mail *</label>
-            <input type="email" id="boxe-email" class="form-control" placeholder="exemplo@email.com" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="boxe-whatsapp">
-              WhatsApp com DDD *
-              <small>Onde enviaremos os detalhes e o acolhimento</small>
-            </label>
-            <input type="tel" id="boxe-whatsapp" class="form-control" placeholder="(51) 99999-9999" required>
-          </div>
-
-          <button type="submit" class="btn-bordo" style="width: 100%; margin-top: 10px;">
-            Avançar para Pagamento via Pix →
-          </button>
-        </form>
-      </div>
-
-      <!-- Boxe Pix View -->
-      <div id="boxe-pix-view" style="display: none; text-align: center;">
-        <div class="modal-tag">Quase lá! Realize seu pagamento</div>
-        <h3 class="modal-header-title">Pagamento via Pix</h3>
-        
-        <p style="font-size: 0.95rem; color: var(--text-soft); margin-bottom: 14px;">
-          Transfira o valor exato de <strong id="boxe-pix-amount" style="color: var(--bordo);">R$ 50,00</strong> para a chave Pix oficial:
-        </p>
-
-        <div class="pix-box">
-          <div style="font-size: 0.85rem; color: var(--text-soft); font-weight: 600;">Chave Pix (E-mail):</div>
-          <div class="pix-key-display" id="boxePixKey">negrasclubb@gmail.com</div>
-          <div>
-            <button class="btn-outline-bordo" type="button" style="padding: 6px 16px; font-size: 0.85rem;" onclick="copyPix('boxePixKey', 'boxeCopyToast')">
-              Copiar Chave Pix
-            </button>
-          </div>
-          <div id="boxeCopyToast" class="copy-toast">Código Pix copiado com sucesso!</div>
-        </div>
-
-        <p style="font-size: 0.88rem; color: var(--text-soft); line-height: 1.5; margin-bottom: 20px;">
-          Após o pagamento, envie o comprovante para o nosso WhatsApp com seu nome. A confirmação da sua vaga e os detalhes do local serão enviados de volta na hora!
-        </p>
-
-        <button class="btn-bordo" onclick="finishPaidBooking('modal-boxe')" style="width: 100%;">
-          Já realizei o Pix / Concluir
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: SAMBA (Pago) -->
-  <div id="modal-samba" class="modal-overlay" onclick="closeModalOnBackdrop(event, 'modal-samba')">
-    <div class="modal-card">
-      <button class="modal-close-btn" onclick="closeModal('modal-samba')" aria-label="Fechar modal">✕</button>
-
-      <div id="samba-form-view">
-        <div class="modal-tag">🎟️ Inscrição em Evento Pago • Valor Único</div>
-        <h3 class="modal-header-title">Comprar Ingresso</h3>
-
-        <div class="modal-info-box">
-          <p style="margin: 0 0 6px;"><strong>Aula de Samba • Sábado, 24 de outubro de 2026, 17:30 (Casa de Cultura Mario Quintana)</strong></p>
-          <p style="margin: 0 0 6px; color: var(--cereja); font-weight: 600;">Vagas disponíveis no momento: 30 de 30</p>
-          <div style="font-size: 0.85rem; color: var(--text-soft);">
-            <strong>Aula de Samba</strong> • Valor único: R$ 50,00 por pessoa
-          </div>
-          <div style="margin-top: 8px; font-weight: 700; color: var(--bordo); font-size: 1.05rem;" id="samba-total-preview">
-            Total a pagar: R$ 50,00
-          </div>
-        </div>
-
-        <form onsubmit="handlePaidSubmit(event, 'Samba')">
-          <div class="form-group">
-            <label class="form-label" for="samba-qty">Quantidade de Ingressos (1 a 10) *</label>
-            <select id="samba-qty" class="form-control" onchange="updatePaidTotal('samba', this.value)" required>
-              <option value="1">1 ingresso — R$ 50,00</option>
-              <option value="2">2 ingressos — R$ 100,00</option>
-              <option value="3">3 ingressos — R$ 150,00</option>
-              <option value="4">4 ingressos — R$ 200,00</option>
-              <option value="5">5 ingressos — R$ 250,00</option>
-              <option value="6">6 ingressos — R$ 300,00</option>
-              <option value="7">7 ingressos — R$ 350,00</option>
-              <option value="8">8 ingressos — R$ 400,00</option>
-              <option value="9">9 ingressos — R$ 450,00</option>
-              <option value="10">10 ingressos — R$ 500,00</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="samba-name">Nome Completo *</label>
-            <input type="text" id="samba-name" class="form-control" placeholder="Seu nome completo" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="samba-email">Seu E-mail *</label>
-            <input type="email" id="samba-email" class="form-control" placeholder="exemplo@email.com" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="samba-whatsapp">
-              WhatsApp com DDD *
-              <small>Onde enviaremos os detalhes e o acolhimento</small>
-            </label>
-            <input type="tel" id="samba-whatsapp" class="form-control" placeholder="(51) 99999-9999" required>
-          </div>
-
-          <button type="submit" class="btn-bordo" style="width: 100%; margin-top: 10px;">
-            Avançar para Pagamento via Pix →
-          </button>
-        </form>
-      </div>
-
-      <!-- Samba Pix View -->
-      <div id="samba-pix-view" style="display: none; text-align: center;">
-        <div class="modal-tag">Quase lá! Realize seu pagamento</div>
-        <h3 class="modal-header-title">Pagamento via Pix</h3>
-        
-        <p style="font-size: 0.95rem; color: var(--text-soft); margin-bottom: 14px;">
-          Transfira o valor exato de <strong id="samba-pix-amount" style="color: var(--bordo);">R$ 50,00</strong> para a chave Pix oficial:
-        </p>
-
-        <div class="pix-box">
-          <div style="font-size: 0.85rem; color: var(--text-soft); font-weight: 600;">Chave Pix (E-mail):</div>
-          <div class="pix-key-display" id="sambaPixKey">negrasclubb@gmail.com</div>
-          <div>
-            <button class="btn-outline-bordo" type="button" style="padding: 6px 16px; font-size: 0.85rem;" onclick="copyPix('sambaPixKey', 'sambaCopyToast')">
-              Copiar Chave Pix
-            </button>
-          </div>
-          <div id="sambaCopyToast" class="copy-toast">Código Pix copiado com sucesso!</div>
-        </div>
-
-        <p style="font-size: 0.88rem; color: var(--text-soft); line-height: 1.5; margin-bottom: 20px;">
-          Após o pagamento, envie o comprovante para o nosso WhatsApp com seu nome. A confirmação da sua vaga e os detalhes do local serão enviados de volta na hora!
-        </p>
-
-        <button class="btn-bordo" onclick="finishPaidBooking('modal-samba')" style="width: 100%;">
-          Já realizei o Pix / Concluir
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- JavaScript Logic -->
   <script>
@@ -1847,20 +1778,6 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       }
     }
 
-    // Paid Event Calculation
-    function updatePaidTotal(type, qty) {
-      const total = parseInt(qty, 10) * 50;
-      const formatted = `Total a pagar: R$ ${total},00`;
-      
-      if (type === 'boxe') {
-        document.getElementById('boxe-total-preview').innerText = formatted;
-        document.getElementById('boxe-pix-amount').innerText = `R$ ${total},00`;
-      } else if (type === 'samba') {
-        document.getElementById('samba-total-preview').innerText = formatted;
-        document.getElementById('samba-pix-amount').innerText = `R$ ${total},00`;
-      }
-    }
-
     // Form Submissions
     function handleFitdanceSubmit(e) {
       e.preventDefault();
@@ -1882,89 +1799,6 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
 
       document.getElementById('fitdance-form-view').style.display = 'none';
       document.getElementById('fitdance-success-view').style.display = 'block';
-    }
-
-    function handlePaidSubmit(e, eventType) {
-      e.preventDefault();
-      if (eventType === 'Boxe') {
-        const name = document.getElementById('boxe-name').value;
-        const email = document.getElementById('boxe-email').value;
-        const whatsapp = document.getElementById('boxe-whatsapp').value;
-        const qty = document.getElementById('boxe-qty').value;
-
-        saveRegistration({
-          id: Date.now(),
-          event: 'Aula de Boxe',
-          name,
-          email,
-          whatsapp,
-          qty: parseInt(qty, 10),
-          type: `Pago (R$ ${parseInt(qty, 10) * 50})`,
-          date: 'Agora'
-        });
-
-        document.getElementById('boxe-form-view').style.display = 'none';
-        document.getElementById('boxe-pix-view').style.display = 'block';
-      } else if (eventType === 'Samba') {
-        const name = document.getElementById('samba-name').value;
-        const email = document.getElementById('samba-email').value;
-        const whatsapp = document.getElementById('samba-whatsapp').value;
-        const qty = document.getElementById('samba-qty').value;
-
-        saveRegistration({
-          id: Date.now(),
-          event: 'Aula de Samba',
-          name,
-          email,
-          whatsapp,
-          qty: parseInt(qty, 10),
-          type: `Pago (R$ ${parseInt(qty, 10) * 50})`,
-          date: 'Agora'
-        });
-
-        document.getElementById('samba-form-view').style.display = 'none';
-        document.getElementById('samba-pix-view').style.display = 'block';
-      }
-    }
-
-    function copyPix(keyElementId, toastId) {
-      const keyText = document.getElementById(keyElementId).innerText.trim();
-      navigator.clipboard.writeText(keyText).then(() => {
-        const toast = document.getElementById(toastId);
-        toast.style.display = 'block';
-        setTimeout(() => {
-          toast.style.display = 'none';
-        }, 3000);
-      }).catch(() => {
-        // Fallback for older browsers
-        const textarea = document.createElement('textarea');
-        textarea.value = keyText;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        const toast = document.getElementById(toastId);
-        toast.style.display = 'block';
-        setTimeout(() => {
-          toast.style.display = 'none';
-        }, 3000);
-      });
-    }
-
-    function finishPaidBooking(modalId) {
-      closeModal(modalId);
-      alert('Sua reserva foi registrada! Lembre-se de enviar seu comprovante no WhatsApp do Negras Club para confirmação imediata. Seja muito bem-vinda!');
-      
-      // Reset views
-      setTimeout(() => {
-        if (modalId === 'modal-boxe') {
-          document.getElementById('boxe-form-view').style.display = 'block';
-          document.getElementById('boxe-pix-view').style.display = 'none';
-        } else if (modalId === 'modal-samba') {
-          document.getElementById('samba-form-view').style.display = 'block';
-          document.getElementById('samba-pix-view').style.display = 'none';
-        }
-      }, 500);
     }
 
     // Painel do Organizador Login & Rendering
@@ -2026,8 +1860,6 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeModal('modal-fitdance');
-        closeModal('modal-boxe');
-        closeModal('modal-samba');
       }
     });
   </script>
