@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Negras Club — Encontros, Acolhimento &amp; Eventos</title>
+  
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap">
+  
+  <!-- Basecoat CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basecoat-css@1.0.2/dist/basecoat.cdn.min.css">
+  
+  <!-- Shell CSS & JS -->
+  <style>
+/* Skip artifact shell — fixed styles served beside every artifact.
+   Complements basecoat; artifacts override --accent for their own identity. */
+:root {
+  color-scheme: light dark;
+  --accent: #2563eb;
+  --accent-contrast: #ffffff;
+  --accent-text: color-mix(in srgb, var(--accent) 72%, #000);
+  --bg: #f8f9fb;
+  --surface: #ffffff;
+  --text: #14171f;
+  --text-muted: #5b6472;
+  --border: rgba(20, 23, 31, 0.10);
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(20, 23, 31, 0.08);
+  --space: 16px;
+}
+/* Theme resolution. Without data-theme the viewer's system preference decides,
+   as it always did. With it, the artifact's own choice wins in BOTH directions:
+   a page that hardcodes one palette must not be handed the opposite set of
+   tokens by the machine it happens to be opened on. The dark values appear
+   twice because a media query cannot be folded into a selector list.
+   The attribute sits inside :where() so these blocks keep the specificity of a
+   bare :root — the page's own <style> is linked after this file and must go on
+   overriding any token it wants, exactly as it could before. */
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
+    --bg: #101318;
+    --surface: #181c23;
+    --text: #eef1f6;
+    --text-muted: #9aa4b2;
+    --border: rgba(238, 241, 246, 0.12);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+}
+:root:where([data-theme="dark"]) {
+  color-scheme: dark;
+  --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
+  --bg: #101318;
+  --surface: #181c23;
+  --text: #eef1f6;
+  --text-muted: #9aa4b2;
+  --border: rgba(238, 241, 246, 0.12);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+:root:where([data-theme="light"]) { color-scheme: light; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+
+.shell-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.shell-section { padding: calc(var(--space) * 2) 0; }
+.shell-grid { display: grid; gap: var(--space); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.shell-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: var(--space); }
+.shell-footer { padding: 24px 0 40px; color: var(--text-muted); font-size: 13px; }
+
+.shell-hero { padding: calc(var(--space) * 3) 0 calc(var(--space) * 2); }
+.shell-hero h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.15; margin: 0 0 10px; text-wrap: balance; }
+.shell-hero p { color: var(--text-muted); max-width: 60ch; margin: 0; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space);
+}
+
+.kpi { display: flex; flex-direction: column; gap: 4px; }
+.kpi .kpi-value { font-size: 28px; font-weight: 650; line-height: 1.1; }
+.kpi .kpi-label { font-size: 13px; color: var(--text-muted); }
+.kpi .kpi-delta { font-size: 12.5px; font-weight: 600; }
+.kpi .kpi-delta.up { color: #0a8f3c; }
+.kpi .kpi-delta.down { color: #cf3131; }
+
+table.shell-table { border-collapse: collapse; width: 100%; font-size: 14px; }
+table.shell-table th {
+  text-align: left; font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 600;
+}
+table.shell-table th, table.shell-table td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--border); }
+table.shell-table td.num, table.shell-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+
+.chart-box { width: 100%; min-height: 220px; }
+.chart-box svg { width: 100%; height: auto; display: block; }
+
+.muted { color: var(--text-muted); }
+.accent { color: var(--accent-text); }
+.shell-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shell-fade { animation: shell-fade 400ms ease both; }
+  @keyframes shell-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+
+</style>
+  
+
+  <style>
+    :root {
+      --accent: #9E1B32;
+      --accent-text: #6E1423;
+      --accent-contrast: #FFFFFF;
+      --bordo: #6E1423;
+      --cereja: #9E1B32;
+      --creme: #FDFBF7;
+      --creme-card: #F5EFE6;
+      --creme-border: #E8DCD1;
+      --text-dark: #2B161B;
+      --text-soft: #634E53;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--creme);
+      color: var(--text-dark);
+      font-family: var(--font-sans);
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .font-serif {
+      font-family: var(--font-serif);
+      color: var(--bordo);
+      letter-spacing: -0.01em;
+    }
+
+    /* Decorative stars & icons */
+    .star-icon {
+      display: inline-block;
+      vertical-align: middle;
+      color: var(--cereja);
+      transform: translateY(-1px);
+    }
+
+    .badge-cherry {
+      background-color: #F8E7E9;
+      color: var(--bordo);
+      border: 1px solid #ECC9CE;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-free {
+      background-color: #E8F5E9;
+      color: #1B5E20;
+      border: 1px solid #C8E6C9;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Navigation */
+    .nc-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 251, 247, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--creme-border);
+      transition: box-shadow 0.2s ease;
+    }
+    .nc-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nc-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--bordo);
+    }
+    .nc-logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bordo);
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 6px rgba(110, 20, 35, 0.25);
+    }
+    .nc-brand-text {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--bordo);
+    }
+
+    .nc-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nc-nav-links a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nc-nav-links a:hover {
+      color: var(--cereja);
+    }
+
+    .btn-bordo {
+      background-color: var(--bordo);
+      color: #FFFFFF !important;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--bordo);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(110, 20, 35, 0.18);
+    }
+    .btn-bordo:hover {
+      background-color: var(--cereja);
+      border-color: var(--cereja);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(158, 27, 50, 0.25);
+    }
+    .btn-outline-bordo {
+      background-color: transparent;
+      color: var(--bordo) !important;
+      border: 1.5px solid var(--bordo);
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-outline-bordo:hover {
+      background-color: #F8E7E9;
+      transform: translateY(-1px);
+    }
+
+    /* Mobile Nav Hamburger */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--bordo);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* Hero Section */
+    .nc-hero-wrapper {
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 10% 20%, rgba(245, 239, 230, 0.9) 0%, rgba(253, 251, 247, 1) 70%);
+      padding: 70px 20px 80px;
+      border-bottom: 1px solid var(--creme-border);
+      text-align: center;
+    }
+    .nc-hero-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .nc-hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #F8E7E9;
+      color: var(--bordo);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 22px;
+      border: 1px solid #ECD0D4;
+    }
+    .nc-hero-title {
+      font-size: 3.5rem;
+      line-height: 1.1;
+      margin: 0 0 16px;
+      color: var(--bordo);
+    }
+    .nc-hero-subtitle {
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--cereja);
+      margin: 0 0 20px;
+      font-style: italic;
+    }
+    .nc-hero-text {
+      font-size: 1.12rem;
+      line-height: 1.75;
+      color: var(--text-soft);
+      max-width: 680px;
+      margin: 0 auto 36px;
+    }
+    .nc-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    /* Section Headers */
+    .section-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 72px 20px;
+    }
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 48px;
+    }
+    .section-tag {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cereja);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 2.35rem;
+      margin: 0 0 14px;
+      color: var(--bordo);
+    }
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-soft);
+      margin: 0;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+    .event-card {
+      background: #FFFFFF;
+      border: 1px solid var(--creme-border);
+      border-radius: 20px;
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(110, 20, 35, 0.04);
+    }
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(110, 20, 35, 0.09);
+    }
+    .card-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .event-card h3 {
+      font-size: 1.7rem;
+      margin: 0 0 8px;
+    }
+    .event-tagline {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--cereja);
+      margin: 0 0 18px;
+      line-height: 1.4;
+    }
+    .event-meta {
+      background-color: var(--creme-card);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      border: 1px solid #EAE0D5;
+      font-size: 0.88rem;
+    }
+    .event-meta-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    .event-meta-row:last-child {
+      margin-bottom: 0;
+    }
+    .event-meta-icon {
+      color: var(--cereja);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .event-body {
+      font-size: 0.94rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+    .card-footer-box {
+      border-top: 1px dashed var(--creme-border);
+      padding-top: 18px;
+    }
+    .vagas-indicator {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: var(--bordo);
+    }
+    .price-tag {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--bordo);
+      margin-bottom: 16px;
+    }
+    .price-tag span {
+      font-size: 0.85rem;
+      font-weight: normal;
+      color: var(--text-soft);
+    }
+
+    /* Como Funciona */
+    .steps-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .steps-card {
+      background: #FFFFFF;
+      border: 1px solid var(--creme-border);
+      border-radius: 20px;
+      padding: 34px 28px;
+      box-shadow: 0 4px 16px rgba(110, 20, 35, 0.03);
+    }
+    .steps-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--creme-border);
+    }
+    .steps-card-header h3 {
+      font-size: 1.35rem;
+      margin: 0;
+    }
+    .steps-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .step-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #F8E7E9;
+      color: var(--bordo);
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-weight: 700;
+      color: var(--bordo);
+      margin-bottom: 4px;
+      font-size: 0.98rem;
+    }
+    .step-desc {
+      font-size: 0.92rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Ingressos Block */
+    .tickets-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .ticket-box {
+      background: #FFFFFF;
+      border: 2px solid #EAD8C9;
+      border-radius: 20px;
+      padding: 32px 28px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 6px 20px rgba(110, 20, 35, 0.05);
+    }
+    .ticket-badge-corner {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #F5EFE6;
+      color: var(--bordo);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--creme-border);
+    }
+    .ticket-box h3 {
+      font-size: 1.55rem;
+      margin: 0 0 6px;
+    }
+    .ticket-subtitle {
+      font-size: 0.9rem;
+      color: var(--cereja);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .ticket-price {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--bordo);
+      font-family: var(--font-serif);
+      margin-bottom: 8px;
+    }
+    .ticket-price small {
+      font-size: 0.95rem;
+      font-family: var(--font-sans);
+      color: var(--text-soft);
+      font-weight: normal;
+    }
+    .ticket-vagas {
+      font-size: 0.88rem;
+      color: var(--bordo);
+      font-weight: 600;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--creme-border);
+    }
+    .ticket-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.92rem;
+      color: var(--text-dark);
+    }
+    .ticket-bullets li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      line-height: 1.45;
+    }
+    .bullet-check {
+      color: var(--cereja);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      line-height: 1.2;
+    }
+
+    /* FAQ Accordion */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .faq-item {
+      background: #FFFFFF;
+      border: 1px solid var(--creme-border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .faq-item:hover {
+      border-color: #D6BDB0;
+    }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--bordo);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .faq-question span.arrow {
+      transition: transform 0.25s ease;
+      font-size: 1.2rem;
+      color: var(--cereja);
+    }
+    .faq-item.active .faq-question span.arrow {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 24px;
+      color: var(--text-soft);
+      font-size: 0.96rem;
+      line-height: 1.65;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+      padding: 0 24px 22px;
+    }
+
+    /* Painel do Organizador */
+    .admin-box {
+      max-width: 580px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      border: 1px solid var(--creme-border);
+      border-radius: 20px;
+      padding: 36px 30px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(110, 20, 35, 0.04);
+    }
+    .admin-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .admin-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1.5px solid var(--creme-border);
+      border-radius: 9999px;
+      font-size: 0.95rem;
+      font-family: var(--font-sans);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .admin-input:focus {
+      border-color: var(--bordo);
+    }
+
+    /* Contato Section */
+    .contact-card {
+      max-width: 840px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #FAF4ED 0%, #FFFFFF 100%);
+      border: 1px solid var(--creme-border);
+      border-radius: 24px;
+      padding: 44px 32px;
+      text-align: center;
+      box-shadow: 0 6px 24px rgba(110, 20, 35, 0.04);
+    }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    /* Footer */
+    .nc-footer {
+      background-color: #24070D;
+      color: #F5EFE6;
+      padding: 56px 20px 36px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nc-footer-mono {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #9E1B32;
+      color: #FFF;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    }
+    .nc-footer-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      color: #FFFFFF;
+      margin: 0 0 8px;
+    }
+    .nc-footer-subtitle {
+      font-size: 1.05rem;
+      color: #ECD0D4;
+      margin: 0 0 16px;
+      font-weight: 500;
+    }
+    .nc-footer-desc {
+      font-size: 0.92rem;
+      color: #D1B8B3;
+      max-width: 540px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+    .nc-footer-copy {
+      font-size: 0.8rem;
+      color: rgba(245, 239, 230, 0.45);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 10, 15, 0.72);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      overflow-y: auto;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-card {
+      background: #FFFFFF;
+      width: 100%;
+      max-width: 540px;
+      border-radius: 22px;
+      padding: 32px 28px;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--creme-border);
+      max-height: 92vh;
+      overflow-y: auto;
+      animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #F5EFE6;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--bordo);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .modal-close-btn:hover {
+      background: #EAD8C9;
+    }
+    .modal-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--cereja);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .modal-header-title {
+      font-size: 1.6rem;
+      margin: 0 0 10px;
+      color: var(--bordo);
+    }
+    .modal-info-box {
+      background-color: var(--creme-card);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      border: 1px solid #EAE0D5;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--bordo);
+      margin-bottom: 6px;
+    }
+    .form-label small {
+      font-weight: normal;
+      color: var(--text-soft);
+      display: block;
+      margin-top: 2px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--creme-border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: var(--font-sans);
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #FFF;
+      color: var(--text-dark);
+    }
+    .form-control:focus {
+      border-color: var(--bordo);
+      box-shadow: 0 0 0 3px rgba(110, 20, 35, 0.12);
+    }
+
+
+    /* Modal success screen */
+    .success-view {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .success-icon-wrap {
+      width: 60px;
+      height: 60px;
+      background: #E8F5E9;
+      color: #2E7D32;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .nc-nav-links {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .nc-hero-title {
+        font-size: 2.6rem;
+      }
+      .steps-container, .tickets-grid {
+        grid-template-columns: 1fr;
+      }
+      .admin-form {
+        flex-direction: column;
+      }
+    }
+
+    /* Mobile drawer */
+    .mobile-drawer {
+      display: none;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--creme-border);
+      padding: 16px 20px 24px;
+    }
+    .mobile-drawer.open {
+      display: block;
+    }
+    .mobile-drawer ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .mobile-drawer a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* Floating WhatsApp Button */
+    .whatsapp-float-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background-color: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4), 0 2px 8px rgba(0, 0, 0, 0.16);
+      z-index: 990;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .whatsapp-float-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.55), 0 4px 10px rgba(0, 0, 0, 0.2);
+      color: #FFFFFF;
+    }
+    .whatsapp-float-btn:active {
+      transform: scale(0.96);
+    }
+    .whatsapp-float-btn:focus-visible {
+      outline: 3px solid #2B161B;
+      outline-offset: 3px;
+    }
+    @media (max-width: 600px) {
+      .whatsapp-float-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 54px;
+        height: 54px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="nc-header">
+    <div class="nc-nav">
+      <a href="#" class="nc-brand">
+        <div class="nc-logo-icon">NC</div>
+        <span class="nc-brand-text">Negras Club</span>
+      </a>
+
+      <ul class="nc-nav-links">
+        <li><a href="#eventos">Eventos &amp; Agenda</a></li>
+        <li><a href="#como-funciona">Como Funciona</a></li>
+        <li><a href="#duvidas">Dúvidas</a></li>
+        <li><a href="#painel">Painel da Organizadora</a></li>
+      </ul>
+
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <a href="#eventos" class="btn-bordo" style="text-decoration: none;">
+          <span>Garantir Vaga</span>
+        </a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menu de navegação">
+          ☰
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <ul>
+        <li><a href="#eventos" onclick="toggleMobileMenu()">Eventos &amp; Agenda</a></li>
+        <li><a href="#como-funciona" onclick="toggleMobileMenu()">Como Funciona</a></li>
+        <li><a href="#duvidas" onclick="toggleMobileMenu()">Dúvidas</a></li>
+        <li><a href="#painel" onclick="toggleMobileMenu()">Painel da Organizadora</a></li>
+      </ul>
+      <a href="#eventos" class="btn-bordo" style="width: 100%; text-align: center; text-decoration: none;" onclick="toggleMobileMenu()">Garantir Vaga</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="nc-hero-wrapper">
+    <div class="nc-hero-inner">
+      <div class="nc-hero-pill">
+        <svg class="star-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0L14.7 9.3L24 12L14.7 14.7L12 24L9.3 14.7L0 12L9.3 9.3L12 0Z"/>
+        </svg>
+        <span>Um espaço seguro &amp; de aconchego</span>
+        <svg class="star-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0L14.7 9.3L24 12L14.7 14.7L12 24L9.3 14.7L0 12L9.3 9.3L12 0Z"/>
+        </svg>
+      </div>
+
+      <h1 class="nc-hero-title">Negras Club</h1>
+      <p class="nc-hero-subtitle">"Entre nós existe força, afeto e coragem"</p>
+
+      <p class="nc-hero-text">
+        Um espaço feito por e para mulheres pretas. Aqui a gente se encontra, se acolhe e experimenta coisas novas juntas — sem julgamentos, com muito afeto, conversas verdadeiras e novas amizades.
+      </p>
+
+      <div class="nc-hero-actions">
+        <a href="#eventos" class="btn-bordo">
+          Ver Próximos Encontros em Porto Alegre
+        </a>
+        <a href="#como-funciona" class="btn-outline-bordo">
+          Como Funciona
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção Eventos -->
+  <section id="eventos" class="section-wrap">
+    <div class="section-header">
+      <div class="section-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0L14.7 9.3L24 12L14.7 14.7L12 24L9.3 14.7L0 12L9.3 9.3L12 0Z"/>
+        </svg>
+        <span>Próximos Encontros</span>
+      </div>
+      <h2 class="section-title">Eventos em Porto Alegre</h2>
+      <p class="section-desc">
+        Espaços de movimento, ritmo, acolhimento e celebração feitos especialmente para mulheres pretas.
+      </p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- 1) Card: Cinema (11/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-cherry">🎟️ Pago</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Aconchego</span>
+          </div>
+          <h3>Cinema</h3>
+          <p class="event-tagline">Uma sessão de cinema especial para a gente se encontrar, relaxar e compartilhar histórias juntas.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Domingo, 11 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>10:30</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Shopping Lindoia — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Uma manhã de cinema com muito acolhimento e boas companhias. Venha assistir, conversar e aproveitar esse momento leve entre mulheres pretas.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 130 de 130 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Valor do ingresso R$ 15,00
+          </div>
+          <a href="https://uticket.com.br/evento/cinema/01MEZV3J0PBFOU" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 2) Card: Doação de Sangue (17/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-free">✨ Gratuito</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: #1B5E20;">Solidariedade</span>
+          </div>
+          <h3>Doação de Sangue</h3>
+          <p class="event-tagline">Um ato de amor e solidariedade. Vamos juntas doar sangue e salvar vidas.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Sábado, 17 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>08:00 (8h da manhã)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Hospital Conceição (GHC) — Centro Redentor, Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Um encontro com propósito: doar sangue e fazer a diferença. Acolhimento total para quem vai pela primeira vez — a gente caminha junto nessa missão.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 30 de 30 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Investimento Gratuito (R$ 0,00)
+          </div>
+          <a href="https://uticket.com.br/evento/doacao-de-sangue/01MEZUQT9J0FRJ" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 3) Card: Aula de Boxe (17/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-cherry">🎟️ Pago</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Iniciantes</span>
+          </div>
+          <h3>Aula de Boxe</h3>
+          <p class="event-tagline">Movimento, força, energia e acolhimento para mulheres pretas.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Sábado, 17 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>10:00 (10h da manhã)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Centro — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Pensada do zero para iniciantes! Venha descarregar as tensões, exercitar o corpo e celebrar a força coletiva entre mulheres que apoiam umas às outras. Não precisa de experiência prévia.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 40 de 40 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Valor do ingresso R$ 50,00
+          </div>
+          <a href="https://uticket.com.br/evento/aula-de-box/01MEZ1WR43XYX7" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 4) Card: Puppy Yoga (18/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-cherry">🎟️ Pago</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Bem-estar</span>
+          </div>
+          <h3>Puppy Yoga</h3>
+          <p class="event-tagline">Yoga com filhotes de cachorro! Relaxamento, fofura e muita alegria.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Domingo, 18 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>10:00 (10h da manhã)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Bairro Menino Deus — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Uma aula de yoga leve e divertida com a companhia de filhotes. Solte o corpo, relaxe a mente e encha o coração de fofura em um encontro acolhedor.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 20 de 20 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Valor do ingresso R$ 70,00
+          </div>
+          <a href="https://uticket.com.br/evento/puppy-yoga/01MEZO3TZZAGED" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 5) Card: Aula Fitdance (24/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-free">✨ Gratuito</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: #1B5E20;">Ritmo &amp; Dança</span>
+          </div>
+          <h3>Aula Fitdance</h3>
+          <p class="event-tagline">Energia lá em cima, passos contagiantes e muita celebração do nosso corpo.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Sábado, 24 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>11:00 (11h da manhã)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Espaço Iluminus — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Venha dançar, suar e soltar a energia no ritmo da Fitdance. Não precisa saber coreografia — é só chegar, se mexer e se divertir entre mulheres pretas.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 30 de 30 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Investimento Gratuito (R$ 0,00)
+          </div>
+          <a href="https://uticket.com.br/evento/aula-fitdance/01MEZ60PY3G5DF" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 6) Card: Aula de Samba (24/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-cherry">🎟️ Pago</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Ritmo &amp; Tradição</span>
+          </div>
+          <h3>Aula de Samba</h3>
+          <p class="event-tagline">Ritmo, gingado e ancestralidade no coração cultural de Porto Alegre.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Sábado, 24 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>17:30 (17h30)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Casa de Cultura Mario Quintana — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Uma aula deliciosa para conectar corpo, ritmo e ancestralidade. Não precisa saber dançar: nosso encontro é para celebrar, aprender juntas e se divertir com leveza.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 30 de 30 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Valor do ingresso R$ 50,00
+          </div>
+          <a href="https://uticket.com.br/evento/aula-de-samba/01MEZCHO0XI97D" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+
+      <!-- 7) Card: Karaoke de Halloween (30/10) -->
+      <article class="event-card">
+        <div>
+          <div class="card-top-bar">
+            <span class="badge-cherry">🎟️ Pago</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--cereja);">Celebração</span>
+          </div>
+          <h3>Karaoke de Halloween</h3>
+          <p class="event-tagline">Uma noite temática de cantoria, fantasia, gargalhadas e conexão.</p>
+
+          <div class="event-meta">
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📅</span>
+              <span><strong>Sexta-feira, 30 de outubro de 2026</strong></span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">⏰</span>
+              <span>20:00 (20h)</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-icon">📍</span>
+              <span>Cidade Baixa — Porto Alegre</span>
+            </div>
+          </div>
+
+          <p class="event-body">
+            Venha soltar a voz sem vergonha nenhuma no nosso karaokê especial de Halloween! Fantasia opcional, acolhimento garantido e muita música boa para cantar e brindar juntas.
+          </p>
+        </div>
+
+        <div class="card-footer-box">
+          <div class="vagas-indicator">
+            <span>Restam 40 de 40 vagas</span>
+            <span style="color: #2E7D32;">● Aberto</span>
+          </div>
+          <div class="price-tag">
+            Valor do ingresso R$ 35,00
+          </div>
+          <a href="https://uticket.com.br/evento/karaoke-de-halloween/01MEZM0V6B804G" target="_blank" rel="noopener" class="btn-bordo" style="width: 100%; box-sizing: border-box; text-decoration: none;">
+            Comprar Ingresso
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Seção Como Funciona -->
+  <section id="como-funciona" style="background-color: #FAF4ED; border-top: 1px solid var(--creme-border); border-bottom: 1px solid var(--creme-border);">
+    <div class="section-wrap">
+      <div class="section-header">
+        <div class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0L14.7 9.3L24 12L14.7 14.7L12 24L9.3 14.7L0 12L9.3 9.3L12 0Z"/>
+          </svg>
+          <span>Simples &amp; Acolhedor</span>
+        </div>
+        <h2 class="section-title">Como Funciona a Inscrição</h2>
+        <p class="section-desc">
+          Tanto nos eventos pagos quanto nas vivências gratuitas, todo o processo é feito com muito cuidado e segurança.
+        </p>
+      </div>
+
+      <div class="steps-container">
+        <!-- Eventos Pagos -->
+        <div class="steps-card">
+          <div class="steps-card-header">
+            <span style="font-size: 1.6rem;">🎟️</span>
+            <div>
+              <h3>Eventos Pagos</h3>
+            </div>
+          </div>
+
+          <ul class="steps-list">
+            <li class="step-item">
+              <div class="step-num">1</div>
+              <div>
+                <div class="step-title">Clique em Comprar Ingresso</div>
+                <p class="step-desc">Escolha o encontro desejado na programação e acesse o link oficial do evento na uticket.</p>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">2</div>
+              <div>
+                <div class="step-title">Pagamento seguro na plataforma</div>
+                <p class="step-desc">Escolha a forma de pagamento de sua preferência diretamente na uticket (Pix, cartão ou outros meios disponíveis).</p>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">3</div>
+              <div>
+                <div class="step-title">Vaga garantida automaticamente</div>
+                <p class="step-desc">Sua confirmação é imediata pela plataforma, sem necessidade de envio manual de comprovante.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Evento Gratuito -->
+        <div class="steps-card">
+          <div class="steps-card-header">
+            <span style="font-size: 1.6rem;">✨</span>
+            <div>
+              <h3>Evento Gratuito (Aula Fitdance)</h3>
+            </div>
+          </div>
+
+          <ul class="steps-list">
+            <li class="step-item">
+              <div class="step-num">1</div>
+              <div>
+                <div class="step-title">Preencha seus dados</div>
+                <p class="step-desc">Nome, e-mail, WhatsApp e quantidade de pessoas no formulário.</p>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">2</div>
+              <div>
+                <div class="step-title">Confirmação imediata</div>
+                <p class="step-desc">Sem custos e sem cobrança. Sua vaga fica registrada na hora.</p>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">3</div>
+              <div>
+                <div class="step-title">Venha se divertir</div>
+                <p class="step-desc">É só comparecer ao Espaço Iluminus às 11h com roupa confortável!</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Seção Dúvidas -->
+  <section id="duvidas" style="background-color: #FAF4ED; border-top: 1px solid var(--creme-border); border-bottom: 1px solid var(--creme-border);">
+    <div class="section-wrap">
+      <div class="section-header">
+        <div class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0L14.7 9.3L24 12L14.7 14.7L12 24L9.3 14.7L0 12L9.3 9.3L12 0Z"/>
+          </svg>
+          <span>Tire suas dúvidas</span>
+        </div>
+        <h2 class="section-title">Dúvidas Frequentes</h2>
+        <p class="section-desc">
+          A gente quer que você venha com o coração leve e em paz.
+        </p>
+      </div>
+
+      <div class="faq-container">
+        <!-- Item 1 -->
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Posso ir sozinha?</span>
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">
+            <p>Com certeza! A maioria das participantes vem sozinha no primeiro encontro. Nosso espaço é preparado com muito cuidado e carinho justamente para que você se sinta acolhida desde o primeiro instante e faça amizades já nos primeiros minutos.</p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Como funciona a Aula Fitdance gratuita?</span>
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">
+            <p>A Aula Fitdance é 100% gratuita (R$ 0,00) no Espaço Iluminus em Porto Alegre, sábado 24/10 às 11h. Basta fazer a inscrição com seus dados e a quantidade de pessoas. As vagas são limitadas a 30 participantes para garantir um espaço confortável.</p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Como funcionam os ingressos pagos da Aula de Boxe e Samba?</span>
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">
+            <p>Os ingressos são comprados diretamente pelo botão "Comprar Ingresso" de cada evento, que redireciona você para a plataforma oficial da uticket. Lá, o pagamento é realizado com total segurança (via Pix, cartão de crédito ou outros meios disponíveis na plataforma) e a sua vaga é garantida automaticamente, sem necessidade de envio manual de comprovante.</p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Onde exatamente acontece o evento de Boxe?</span>
+            <span class="arrow">▾</span>
+          </button>
+          <div class="faq-answer">
+            <p>A aula acontece na cidade de Porto Alegre em espaço acolhedor e de fácil acesso. O endereço exato é enviado diretamente no WhatsApp de todas as inscritas confirmadas com antecedência.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção Painel do Organizador -->
+  <section id="painel" class="section-wrap">
+    <div class="admin-box">
+      <div class="section-tag" style="justify-content: center; margin-bottom: 10px;">
+        <span>🔒 Área Restrita</span>
+      </div>
+      <h2 style="font-size: 1.85rem; margin: 0 0 12px; color: var(--bordo);">Painel do Organizador</h2>
+      <p style="font-size: 0.95rem; color: var(--text-soft); margin: 0; line-height: 1.6;">
+        Digite a senha de organizadora para visualizar a lista completa de inscrições dos eventos pagos e gratuitos.
+      </p>
+
+      <form class="admin-form" onsubmit="handleAdminLogin(event)">
+        <input type="password" id="adminPassInput" class="admin-input" placeholder="Digite sua senha de acesso" required>
+        <button type="submit" class="btn-bordo" style="white-space: nowrap;">Entrar</button>
+      </form>
+      <div id="adminLoginFeedback" style="margin-top: 12px; font-size: 0.88rem; display: none;"></div>
+
+      <!-- Área de listagem de inscritas (revelada com a senha mock: admin ou 1234) -->
+      <div id="adminPanelArea" style="display: none; margin-top: 28px; text-align: left; border-top: 1px solid var(--creme-border); padding-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <h4 style="margin: 0; font-size: 1.15rem; color: var(--bordo);">Inscrições Registradas (Tempo Real)</h4>
+          <button class="btn-outline-bordo" style="padding: 4px 12px; font-size: 0.8rem;" onclick="logoutAdmin()">Sair</button>
+        </div>
+        <div id="adminListContainer" style="font-size: 0.88rem; max-height: 240px; overflow-y: auto; background: var(--creme-card); padding: 12px; border-radius: 10px;">
+          <!-- Itens carregados via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção Contato -->
+  <section class="section-wrap" style="padding-top: 0;">
+    <div class="contact-card">
+      <div class="section-tag" style="justify-content: center;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0L14.7 9.3L24 12L14.7 14.7L12 24L9.3 14.7L0 12L9.3 9.3L12 0Z"/>
+        </svg>
+        <span>Portas Abertas</span>
+      </div>
+      <h2 style="font-size: 2.1rem; margin: 6px 0 14px; color: var(--bordo);">Quer conversar com a gente antes de vir?</h2>
+      <p style="font-size: 1.05rem; color: var(--text-soft); max-width: 620px; margin: 0 auto; line-height: 1.6;">
+        Se bateu aquela timidez ou você quer tirar qualquer dúvida, manda uma mensagem. A nossa equipe vai te responder com todo o carinho e acolhimento.
+      </p>
+
+      <div class="contact-actions">
+        <a href="https://wa.me/5551998469575?text=Ol%C3%A1!%20Vim%20pelo%20site%20do%20negras%20club%20%F0%9F%92%9C" target="_blank" rel="noopener noreferrer" class="btn-bordo" style="background-color: #25D366; border-color: #25D366; color: #FFF !important;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.031 2C6.504 2 2 6.5 2 12.022c0 1.83.493 3.55 1.348 5.035L2 22l5.093-1.334A9.97 9.97 0 0 0 12.031 22C17.558 22 22 17.5 22 12.022 22 6.5 17.558 2 12.031 2zm5.823 14.225c-.244.685-1.418 1.31-1.956 1.36-.51.048-1.178.072-3.83-1.026-3.39-1.403-5.57-4.838-5.74-5.064-.168-.226-1.378-1.833-1.378-3.496 0-1.663.873-2.482 1.185-2.822.313-.34.684-.424.912-.424.227 0 .454.002.653.013.21.01.492-.08.769.585.285.684.972 2.373 1.058 2.545.086.172.143.373.029.601-.114.228-.172.37-.342.57-.17.2-.358.448-.512.601-.17.17-.348.354-.15.694.198.34.88 1.452 1.888 2.35 1.303 1.16 2.404 1.52 2.744 1.69.34.17.538.143.738-.086.2-.228.854-.997 1.082-1.338.228-.34.456-.285.769-.17.313.114 1.984.936 2.325 1.107.34.17.568.256.653.398.085.142.085.824-.159 1.509z"/>
+          </svg>
+          Chamar no WhatsApp
+        </a>
+        <a href="https://instagram.com/negrasclub" target="_blank" rel="noopener noreferrer" class="btn-outline-bordo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.79-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          @negrasclub no Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Botão Flutuante de WhatsApp -->
+  <a href="https://wa.me/5551998469575?text=Ol%C3%A1!%20Vim%20pelo%20site%20do%20negras%20club%20%F0%9F%92%9C" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     class="whatsapp-float-btn" 
+     aria-label="Falar no WhatsApp">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true">
+      <path d="M12.031 2C6.504 2 2 6.5 2 12.022c0 1.83.493 3.55 1.348 5.035L2 22l5.093-1.334A9.97 9.97 0 0 0 12.031 22C17.558 22 22 17.5 22 12.022 22 6.5 17.558 2 12.031 2zm5.823 14.225c-.244.685-1.418 1.31-1.956 1.36-.51.048-1.178.072-3.83-1.026-3.39-1.403-5.57-4.838-5.74-5.064-.168-.226-1.378-1.833-1.378-3.496 0-1.663.873-2.482 1.185-2.822.313-.34.684-.424.912-.424.227 0 .454.002.653.013.21.01.492-.08.769.585.285.684.972 2.373 1.058 2.545.086.172.143.373.029.601-.114.228-.172.37-.342.57-.17.2-.358.448-.512.601-.17.17-.348.354-.15.694.198.34.88 1.452 1.888 2.35 1.303 1.16 2.404 1.52 2.744 1.69.34.17.538.143.738-.086.2-.228.854-.997 1.082-1.338.228-.34.456-.285.769-.17.313.114 1.984.936 2.325 1.107.34.17.568.256.653.398.085.142.085.824-.159 1.509z"/>
+    </svg>
+  </a>
+
+  <!-- Rodapé -->
+  <footer class="nc-footer">
+    <div class="nc-footer-mono">NC</div>
+    <div class="nc-footer-title">Negras Club</div>
+    <div class="nc-footer-subtitle">Feito com afeto para mulheres pretas.</div>
+    <p class="nc-footer-desc">
+      Um espaço seguro de conexão, alegria, descanso e celebração de quem somos.
+    </p>
+    <div class="nc-footer-copy">
+      &copy; 2026 Negras Club — Todos os direitos reservados. Porto Alegre, RS.
+    </div>
+  </footer>
+
+  <!-- MODAL: FITDANCE (Gratuito) -->
+  <div id="modal-fitdance" class="modal-overlay" onclick="closeModalOnBackdrop(event, 'modal-fitdance')">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeModal('modal-fitdance')" aria-label="Fechar modal">✕</button>
+      
+      <div id="fitdance-form-view">
+        <div class="modal-tag">✨ Inscrição Gratuita • Vagas Limitadas</div>
+        <h3 class="modal-header-title">Garantir Vaga na Aula Fitdance</h3>
+        
+        <div class="modal-info-box">
+          <p style="margin: 0 0 6px;"><strong>Sábado, 24 de outubro de 2026, 11:00 • Espaço Iluminus — Porto Alegre</strong></p>
+          <p style="margin: 0 0 6px; color: #1B5E20; font-weight: 600;">Vagas disponíveis no momento: 30 de 30</p>
+          <div style="font-size: 0.85rem; color: var(--text-soft);">
+            <strong>Aula Fitdance</strong> • Espaço Iluminus — Porto Alegre • <strong>Gratuito</strong><br>
+            Venha dançar, suar e soltar a energia no ritmo da Fitdance. Não precisa saber coreografia — é só chegar, se mexer e se divertir.
+          </div>
+        </div>
+
+        <form onsubmit="handleFitdanceSubmit(event)">
+          <div class="form-group">
+            <label class="form-label" for="fitdance-qty">Quantidade de Vagas *</label>
+            <select id="fitdance-qty" class="form-control" required>
+              <option value="1">1 vaga (Individual)</option>
+              <option value="2">2 vagas</option>
+              <option value="3">3 vagas</option>
+              <option value="4">4 vagas</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="fitdance-name">Nome Completo *</label>
+            <input type="text" id="fitdance-name" class="form-control" placeholder="Seu nome completo" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="fitdance-email">Seu E-mail *</label>
+            <input type="email" id="fitdance-email" class="form-control" placeholder="exemplo@email.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="fitdance-whatsapp">
+              WhatsApp com DDD *
+              <small>Onde enviaremos o lembrete e informações do Espaço Iluminus</small>
+            </label>
+            <input type="tel" id="fitdance-whatsapp" class="form-control" placeholder="(51) 99999-9999" required>
+          </div>
+
+          <button type="submit" class="btn-bordo" style="width: 100%; margin-top: 10px; background: #2E7D32; border-color: #2E7D32;">
+            Garantir vaga gratuita →
+          </button>
+        </form>
+      </div>
+
+      <!-- Fitdance Sucesso -->
+      <div id="fitdance-success-view" class="success-view" style="display: none;">
+        <div class="success-icon-wrap">✓</div>
+        <h3 style="font-size: 1.5rem; color: var(--bordo); margin: 0 0 10px;">Vaga Garantida com Sucesso!</h3>
+        <p style="font-size: 0.95rem; color: var(--text-soft); margin-bottom: 20px;">
+          Sua inscrição para a <strong>Aula Fitdance</strong> no Espaço Iluminus está confirmada. Já enviamos uma mensagem de acolhimento para o seu WhatsApp com todas as orientações.
+        </p>
+        <button class="btn-bordo" onclick="closeModal('modal-fitdance')" style="width: 100%;">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- JavaScript Logic -->
+  <script>
+    // Mock registration store (with initial sample records)
+    const initialRegistrations = [
+      { id: 1, event: 'Aula Fitdance', name: 'Juliana Souza', whatsapp: '(51) 98822-1100', qty: 1, type: 'Gratuito', date: 'Hoje às 09:15' },
+      { id: 2, event: 'Aula de Boxe', name: 'Mariana Oliveira', whatsapp: '(51) 99133-4422', qty: 2, type: 'Pago (R$ 100)', date: 'Ontem às 18:40' },
+      { id: 3, event: 'Aula de Samba', name: 'Aline Ferreira', whatsapp: '(51) 98122-8877', qty: 1, type: 'Pago (R$ 50)', date: 'Ontem às 14:10' }
+    ];
+
+    function getRegistrations() {
+      const stored = localStorage.getItem('nc_registrations');
+      if (!stored) {
+        localStorage.setItem('nc_registrations', JSON.stringify(initialRegistrations));
+        return initialRegistrations;
+      }
+      return JSON.parse(stored);
+    }
+
+    function saveRegistration(item) {
+      const list = getRegistrations();
+      list.unshift(item);
+      localStorage.setItem('nc_registrations', JSON.stringify(list));
+    }
+
+    // Navigation Toggle for Mobile
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      drawer.classList.toggle('open');
+    }
+
+    // Accordion Toggle
+    function toggleFaq(button) {
+      const item = button.parentElement;
+      const isActive = item.classList.contains('active');
+      
+      // Close all others
+      document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+
+    // Modal Handlers
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function closeModalOnBackdrop(e, modalId) {
+      if (e.target === document.getElementById(modalId)) {
+        closeModal(modalId);
+      }
+    }
+
+    // Form Submissions
+    function handleFitdanceSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('fitdance-name').value;
+      const email = document.getElementById('fitdance-email').value;
+      const whatsapp = document.getElementById('fitdance-whatsapp').value;
+      const qty = document.getElementById('fitdance-qty').value;
+
+      saveRegistration({
+        id: Date.now(),
+        event: 'Aula Fitdance',
+        name,
+        email,
+        whatsapp,
+        qty: parseInt(qty, 10),
+        type: 'Gratuito',
+        date: 'Agora'
+      });
+
+      document.getElementById('fitdance-form-view').style.display = 'none';
+      document.getElementById('fitdance-success-view').style.display = 'block';
+    }
+
+    // Painel do Organizador Login & Rendering
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('adminPassInput').value.trim();
+      const feedback = document.getElementById('adminLoginFeedback');
+
+      // Simple mock authentication (any simple password like 1234, admin, or negrasclub)
+      if (pass.toLowerCase() === 'admin' || pass === '1234' || pass.toLowerCase() === 'negrasclub') {
+        feedback.style.display = 'block';
+        feedback.style.color = '#2E7D32';
+        feedback.innerText = 'Acesso liberado com sucesso!';
+        document.getElementById('adminPanelArea').style.display = 'block';
+        renderAdminList();
+      } else {
+        feedback.style.display = 'block';
+        feedback.style.color = '#9E1B32';
+        feedback.innerText = 'Senha incorreta. Dica: use "admin" ou "1234" para demonstração.';
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById('adminPassInput').value = '';
+      document.getElementById('adminPanelArea').style.display = 'none';
+      const feedback = document.getElementById('adminLoginFeedback');
+      feedback.style.display = 'none';
+    }
+
+    function renderAdminList() {
+      const container = document.getElementById('adminListContainer');
+      const list = getRegistrations();
+
+      if (list.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-soft); text-align: center; margin: 10px 0;">Nenhuma inscrição registrada ainda.</p>';
+        return;
+      }
+
+      let html = '<div style="display: flex; flex-direction: column; gap: 8px;">';
+      list.forEach(item => {
+        html += `
+          <div style="background: #FFF; border: 1px solid var(--creme-border); padding: 10px 14px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <strong>${item.name}</strong> <span style="color: var(--cereja);">(${item.event})</span><br>
+              <span style="color: var(--text-soft); font-size: 0.8rem;">${item.whatsapp} • Qtd: ${item.qty} vaga(s)</span>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-weight: 600; color: var(--bordo); font-size: 0.82rem;">${item.type}</span><br>
+              <span style="font-size: 0.75rem; color: #888;">${item.date}</span>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    // Keyboard support: Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal('modal-fitdance');
+      }
+    });
+  </script>
+<script>
+/* Skip artifact shell — fixed helpers served beside every artifact. */
+(function () {
+  "use strict";
+
+  var fmt = {
+    num: function (v, opts) { return new Intl.NumberFormat("pt-BR", opts || {}).format(v); },
+    brl: function (v) { return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v); },
+    pct: function (v) { return new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 1 }).format(v); }
+  };
+
+  // axisFmt keeps axis tick labels short (compact notation) so long values
+  // (e.g. full BRL amounts) never clip against the plot edge.
+  function axisFmt(v) {
+    return fmt.num(v, { notation: "compact", maximumFractionDigits: 1 });
+  }
+
+  // format accepts a function OR one of the fmt names ("num" | "brl" | "pct").
+  function coerceFormat(spec) {
+    if (typeof spec === "function") return spec;
+    if (typeof spec === "string" && fmt[spec]) return fmt[spec];
+    return function (v) { return fmt.num(v); };
+  }
+
+  function accent() {
+    return getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#2563eb";
+  }
+  function mutedColor() {
+    return getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim() || "#5b6472";
+  }
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+  function frame(el, w, h) {
+    var svg = svgEl("svg", { viewBox: "0 0 " + w + " " + h, role: "img" });
+    el.innerHTML = "";
+    el.appendChild(svg);
+    return svg;
+  }
+
+  // maxOf guards the axis scale: empty values would give -Infinity (truthy,
+  // so "|| 1" can't catch it) and a non-positive max would flip the chart.
+  function maxOf(values) {
+    var m = values.length ? Math.max.apply(null, values) : 0;
+    return m > 0 ? m : 1;
+  }
+
+  // bar(el, {labels:[], values:[], color?, format?}) — vertical bar chart.
+  function bar(el, cfg) {
+    var W = 640, H = 280, padL = 46, padB = 30, padT = 12;
+    var svg = frame(el, W, H);
+    var max = maxOf(cfg.values);
+    var n = cfg.values.length;
+    var plotW = W - padL - 12, plotH = H - padT - padB;
+    var step = plotW / n, bw = Math.min(step * 0.62, 64);
+    var color = cfg.color || accent();
+    var f = coerceFormat(cfg.format);
+    for (var g = 0; g <= 4; g++) {
+      var gy = padT + plotH - (plotH * g) / 4;
+      svg.appendChild(svgEl("line", { x1: padL, y1: gy, x2: W - 12, y2: gy, stroke: "currentColor", "stroke-opacity": 0.08 }));
+      var lbl = svgEl("text", { x: padL - 8, y: gy + 4, "text-anchor": "end", "font-size": 10, fill: mutedColor() });
+      lbl.textContent = axisFmt((max * g) / 4);
+      svg.appendChild(lbl);
+    }
+    cfg.values.forEach(function (v, i) {
+      var bh = Math.max(0, (v / max) * plotH);
+      var x = padL + i * step + (step - bw) / 2;
+      var y = padT + plotH - bh;
+      var r = svgEl("rect", { x: x, y: y, width: bw, height: bh, rx: 4, fill: color });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + f(v);
+      r.appendChild(t);
+      svg.appendChild(r);
+      var tx = svgEl("text", { x: x + bw / 2, y: H - 10, "text-anchor": "middle", "font-size": 11, fill: mutedColor() });
+      tx.textContent = cfg.labels[i];
+      svg.appendChild(tx);
+    });
+  }
+
+  // line(el, {labels:[], values:[], color?, format?}) — single-series line.
+  function line(el, cfg) {
+    var W = 640, H = 280, padL = 46, padB = 30, padT = 12;
+    var svg = frame(el, W, H);
+    var max = maxOf(cfg.values);
+    var n = cfg.values.length;
+    var plotW = W - padL - 16, plotH = H - padT - padB;
+    var color = cfg.color || accent();
+    var f = coerceFormat(cfg.format);
+    for (var g = 0; g <= 4; g++) {
+      var gy = padT + plotH - (plotH * g) / 4;
+      svg.appendChild(svgEl("line", { x1: padL, y1: gy, x2: W - 16, y2: gy, stroke: "currentColor", "stroke-opacity": 0.08 }));
+      var lbl = svgEl("text", { x: padL - 8, y: gy + 4, "text-anchor": "end", "font-size": 10, fill: mutedColor() });
+      lbl.textContent = axisFmt((max * g) / 4);
+      svg.appendChild(lbl);
+    }
+    var pts = cfg.values.map(function (v, i) {
+      var x = padL + (n === 1 ? plotW / 2 : (plotW * i) / (n - 1));
+      var y = padT + plotH - (v / max) * plotH;
+      return [x, y];
+    });
+    var d = pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
+    svg.appendChild(svgEl("path", { d: d, fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round" }));
+    pts.forEach(function (p, i) {
+      var c = svgEl("circle", { cx: p[0], cy: p[1], r: 3.5, fill: color });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + f(cfg.values[i]);
+      c.appendChild(t);
+      svg.appendChild(c);
+      var tx = svgEl("text", { x: p[0], y: H - 10, "text-anchor": "middle", "font-size": 11, fill: mutedColor() });
+      tx.textContent = cfg.labels[i];
+      svg.appendChild(tx);
+    });
+  }
+
+  // donut(el, {labels:[], values:[], colors?}) — donut with center total.
+  function donut(el, cfg) {
+    var W = 320, H = 280, cx = W / 2, cy = H / 2, R = 92, r = 58;
+    var svg = frame(el, W, H);
+    var total = cfg.values.reduce(function (a, b) { return a + b; }, 0) || 1;
+    var palette = cfg.colors || [accent(), "#1baf7a", "#eda100", "#e34948", "#4a3aa7", "#e87ba4"];
+    var a0 = -Math.PI / 2;
+    cfg.values.forEach(function (v, i) {
+      var a1 = a0 + (v / total) * Math.PI * 2;
+      var large = a1 - a0 > Math.PI ? 1 : 0;
+      var p = ["M", cx + R * Math.cos(a0), cy + R * Math.sin(a0),
+        "A", R, R, 0, large, 1, cx + R * Math.cos(a1), cy + R * Math.sin(a1),
+        "L", cx + r * Math.cos(a1), cy + r * Math.sin(a1),
+        "A", r, r, 0, large, 0, cx + r * Math.cos(a0), cy + r * Math.sin(a0), "Z"].join(" ");
+      var path = svgEl("path", { d: p, fill: palette[i % palette.length] });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + fmt.num(v) + " (" + fmt.pct(v / total) + ")";
+      path.appendChild(t);
+      svg.appendChild(path);
+      a0 = a1;
+    });
+    var center = svgEl("text", { x: cx, y: cy + 5, "text-anchor": "middle", "font-size": 20, "font-weight": 650, fill: "currentColor" });
+    center.textContent = fmt.num(total);
+    svg.appendChild(center);
+  }
+
+  window.skipShell = { fmt: fmt };
+  window.skipChart = { bar: bar, line: line, donut: donut };
+})();
+
+</script>
+</body>
+</html>
